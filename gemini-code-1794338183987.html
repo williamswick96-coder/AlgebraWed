@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saint Peter the Rock Academy - Chapter 1 Review</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax TeX Rendering -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(79, 70, 229, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(79, 70, 229, 0.4); }
+        }
+        .token-glow {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col font-sans selection:bg-indigo-600 selection:text-white">
+
+    <!-- Header Navigation Bar -->
+    <header class="bg-white/95 border-b border-slate-200 sticky top-0 z-30 backdrop-blur-md shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-br from-indigo-600 to-purple-800 text-white p-3 rounded-2xl shadow-md shadow-indigo-700/20">
+                    <i class="fa-solid fa-graduation-cap text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-black text-slate-900 leading-tight">Saint Peter the Rock Academy</h1>
+                    <span class="text-xs text-indigo-600 font-bold">Mathematics Department • Chapter 1 Comprehensive Review</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <div class="bg-slate-100 border border-slate-300 rounded-2xl px-3.5 py-2 flex items-center gap-2 text-xs font-bold text-slate-700">
+                    <i class="fa-solid fa-trophy text-amber-500 text-base"></i>
+                    <span>Score: <strong id="score-counter" class="text-indigo-600 text-sm">0</strong> / 15</span>
+                </div>
+                <button onclick="triggerConfettiCelebration()" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow-md shadow-indigo-600/20 transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-sparkles"></i> Ultimate Confetti
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6 space-y-6">
+
+        <!-- Student Info Banner -->
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-100 pb-4">
+                <div>
+                    <span class="px-3 py-1 bg-indigo-50 text-indigo-800 rounded-full text-[11px] font-extrabold border border-indigo-200 inline-block mb-1">
+                        Comprehensive Homework Module
+                    </span>
+                    <h2 class="text-2xl font-black text-slate-900">Chapter 1 Review: Linear Equations & Inequalities</h2>
+                    <p class="text-xs text-slate-500 font-medium mt-1">
+                        Complete all 15 review problems. Type simplified equations (e.g. <code class="bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-bold">y = 2x + 5</code>), exact values, or inequalities carefully.
+                    </p>
+                </div>
+                <span class="px-3 py-1.5 bg-purple-50 text-purple-700 rounded-xl text-xs font-extrabold border border-purple-200 whitespace-nowrap">
+                    15 Assigned Problems
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1" for="student-first-name">First Name <span class="text-rose-500">*</span></label>
+                    <input type="text" id="student-first-name" placeholder="Enter first name..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-indigo-600 focus:bg-white transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1" for="student-last-name">Last Name <span class="text-rose-500">*</span></label>
+                    <input type="text" id="student-last-name" placeholder="Enter last name..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-indigo-600 focus:bg-white transition-all">
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Questions Container -->
+        <div id="questions-container" class="space-y-6"></div>
+
+        <!-- Submit Module Button -->
+        <div class="py-6 flex justify-center">
+            <button onclick="generateCompletionModal()" class="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 hover:from-indigo-500 hover:to-purple-500 text-white font-extrabold rounded-2xl text-base shadow-xl shadow-indigo-600/30 transition-all transform hover:scale-105 flex items-center justify-center gap-3">
+                <i class="fa-solid fa-award"></i> Submit Chapter Review & View Verification Token
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Completion Grade Token Modal -->
+    <div id="completion-modal" class="hidden fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-xl w-full p-6 sm:p-8 border border-slate-200 text-center space-y-5 transform transition-all">
+            
+            <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-3xl mx-auto border border-indigo-100 shadow-sm">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+
+            <div>
+                <h3 class="text-2xl font-black text-slate-900">Module Completed!</h3>
+                <p id="modal-student-name" class="text-sm font-semibold text-indigo-600">Student: Anonymous</p>
+                <span id="modal-score-badge" class="inline-block px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-xs font-bold mt-2">
+                    Score: 0 / 15 (0%)
+                </span>
+            </div>
+
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-left space-y-2">
+                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Official Grade Verification Token</label>
+                <div class="flex items-center gap-2 bg-white p-3 rounded-xl border border-slate-300 font-mono text-xs font-bold text-slate-800 break-all select-all token-glow">
+                    <span id="token-display">MATH-GRADE::...</span>
+                </div>
+                <button onclick="copyTokenToClipboard()" id="copy-token-btn" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-copy"></i> Copy Token to Clipboard
+                </button>
+            </div>
+
+            <div class="bg-indigo-50/70 p-4 rounded-2xl border border-indigo-100 text-left space-y-2 text-xs text-slate-700">
+                <h4 class="font-extrabold text-indigo-900 flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-info"></i> Instructions to Submit to Dr. Swick via Jupiter:
+                </h4>
+                <ol class="list-decimal list-inside space-y-1 font-medium text-slate-600">
+                    <li>Click <strong>"Copy Token to Clipboard"</strong> above.</li>
+                    <li>Log into your <strong>JupiterEd</strong> account.</li>
+                    <li>Open your Math class assignment (or send a message to Dr. Swick).</li>
+                    <li>Paste the token string into the submission comment box and click <strong>Turn In / Send</strong>.</li>
+                </ol>
+            </div>
+
+            <div class="pt-2">
+                <button onclick="closeCompletionModal()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all">
+                    Close Window
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        const ASSIGNMENT_TITLE = "Chapter 1 Review";
+        let moduleStartTime = Date.now();
+
+        // Structured Modules with Short Inline Theory Cards
+        const modulesData = [
+            {
+                moduleTitle: "Module 1: Linear Functions & Modeling (Sec 1.1 - 1.2)",
+                theoryHeader: "Linear Models & Graphing Intercepts",
+                theoryBody: "• <strong>Slope-Intercept Form:</strong> \\(y = mx + b\\) (where \\(m\\) is rate of change/slope and \\(b\\) is initial value/y-intercept).<br>• <strong>Finding Intercepts:</strong> Set \\(x = 0\\) to find the y-intercept \\((0, y)\\); set \\(y = 0\\) to find the x-intercept \\((x, 0)\\).<br>• <strong>Linear Identification:</strong> Constant first differences in \\(y\\) for equal intervals of \\(x\\) indicate a linear relationship.",
+                questions: [
+                    {
+                        id: 'q1',
+                        num: 1,
+                        sec: '1.1',
+                        title: 'Real-World Linear Models',
+                        prompt: 'A gym membership costs a flat fee of $30 plus $15 per month. Write an equation expressing the total cost \\(C\\) for \\(m\\) months in slope-intercept form.',
+                        placeholder: 'e.g. C = 40m + 100',
+                        targetCanon: 'c=15m+30',
+                        hint: 'Hint: Slope-intercept form is \\(y = mx + b\\), where \\(m\\) is the rate of change and \\(b\\) is the initial flat fee.',
+                        worked: '<strong>Worked Solution:</strong><br>The rate of change is $15 per month (\\(m = 15\\)) and the initial starting fee is $30 (\\(b = 30\\)).<br>Therefore, \\(C = 15m + 30\\).'
+                    },
+                    {
+                        id: 'q2',
+                        num: 2,
+                        sec: '1.1',
+                        title: 'Identifying Linear Relationships in Tables',
+                        prompt: 'Consider the data table: \\(x\\): [1, 2, 3, 4], \\(y\\): [7, 11, 15, 19]. Is this relationship <strong>linear</strong>, <strong>quadratic</strong>, or <strong>exponential</strong>?',
+                        placeholder: 'e.g. Type linear, quadratic, or exponential...',
+                        targetCanon: 'linear',
+                        hint: 'Hint: Calculate the first differences in \\(y\\) as \\(x\\) increases by constant steps of 1.',
+                        worked: '<strong>Worked Solution:</strong><br>As \\(x\\) increases by 1, \\(y\\) increases by a constant rate of \\(11 - 7 = 4\\), \\(15 - 11 = 4\\), and \\(19 - 15 = 4\\).<br>Since the first differences are constant, the function is <strong>linear</strong>.'
+                    },
+                    {
+                        id: 'q3',
+                        num: 3,
+                        sec: '1.2',
+                        title: 'Graphing Linear Equations - Intercepts',
+                        prompt: 'Find the y-intercept of the line given by the equation \\(3x - 4y = 24\\). Express as an ordered pair \\((x, y)\\).',
+                        placeholder: 'e.g. (0, 4)',
+                        targetCanon: '(0,-6)',
+                        hint: 'Hint: To find the y-intercept, set \\(x = 0\\) and solve for \\(y\\).',
+                        worked: '<strong>Worked Solution:</strong><br>Set \\(x = 0\\):<br>\\(3(0) - 4y = 24 \\implies -4y = 24 \\implies y = -6\\).<br>The y-intercept is \\((0, -6)\\).'
+                    },
+                    {
+                        id: 'q4',
+                        num: 4,
+                        sec: '1.2',
+                        title: 'Writing Linear Equations from Coordinate Planes',
+                        prompt: 'A line passes through the points \\((0, 4)\\) and \\((2, 10)\\). Write the equation of the line in slope-intercept form (\\(y = mx + b\\)).',
+                        placeholder: 'e.g. y = 5x + 1',
+                        targetCanon: 'y=3x+4',
+                        hint: 'Hint: First calculate slope \\(m = \\frac{y_2 - y_1}{x_2 - x_1}\\), then identify the y-intercept \\(b\\) from \\((0, 4)\\).',
+                        worked: '<strong>Worked Solution:</strong><br>Slope \\(m = \\frac{10 - 4}{2 - 0} = \\frac{6}{2} = 3\\).<br>Since \\((0, 4)\\) is given, \\(b = 4\\).<br>Thus, \\(y = 3x + 4\\).'
+                    }
+                ]
+            },
+            {
+                moduleTitle: "Module 2: Point-Slope Form, Parallel/Perpendicular Lines & Proportions (Sec 1.3 - 1.4)",
+                theoryHeader: "Line Forms, Slopes & Variation",
+                theoryBody: "• <strong>Point-Slope Form:</strong> \\(y - y_1 = m(x - x_1)\\).<br>• <strong>Parallel & Perpendicular:</strong> Parallel lines have equal slopes (\\(m_1 = m_2\\)); perpendicular lines have negative reciprocal slopes (\\(m_\\perp = -\\frac{1}{m}\\)).<br>• <strong>Direct Variation & Proportions:</strong> \\(y = kx\\) where \\(k = \\frac{y}{x}\\). Solve proportions by cross-multiplying.",
+                questions: [
+                    {
+                        id: 'q5',
+                        num: 5,
+                        sec: '1.3',
+                        title: 'Writing Linear Equations given Points',
+                        prompt: 'Write the equation in slope-intercept form of the line passing through \\((2, 5)\\) with a slope of \\(m = -3\\).',
+                        placeholder: 'e.g. y = -2x + 7',
+                        targetCanon: 'y=-3x+11',
+                        hint: 'Hint: Use point-slope form \\(y - y_1 = m(x - x_1)\\) and solve for \\(y\\).',
+                        worked: '<strong>Worked Solution:</strong><br>\\(y - 5 = -3(x - 2) \\implies y - 5 = -3x + 6 \\implies y = -3x + 11\\).'
+                    },
+                    {
+                        id: 'q6',
+                        num: 6,
+                        sec: '1.3',
+                        title: 'Parallel & Perpendicular Lines',
+                        prompt: 'Write the equation of the line in slope-intercept form that passes through \\((4, -1)\\) and is <strong>perpendicular</strong> to \\(y = 2x + 7\\).',
+                        placeholder: 'e.g. y = -2x + 5',
+                        targetCanon: 'y=-1/2x+1',
+                        hint: 'Hint: Perpendicular lines have negative reciprocal slopes. The slope perpendicular to \\(m = 2\\) is \\(m_\\perp = -\\frac{1}{2}\\).',
+                        worked: '<strong>Worked Solution:</strong><br>Perpendicular slope \\(m_\\perp = -\\frac{1}{2}\\).<br>Using point-slope form with \\((4, -1)\\):<br>\\(y - (-1) = -\\frac{1}{2}(x - 4) \\implies y + 1 = -\\frac{1}{2}x + 2 \\implies y = -\\frac{1}{2}x + 1\\).'
+                    },
+                    {
+                        id: 'q7',
+                        num: 7,
+                        sec: '1.4',
+                        title: 'Direct-Variation Equations',
+                        prompt: 'The variable \\(y\\) varies directly with \\(x\\). If \\(y = 20\\) when \\(x = 4\\), find the value of \\(y\\) when \\(x = 9\\).',
+                        placeholder: 'e.g. 18',
+                        targetCanon: '45',
+                        hint: 'Hint: Direct variation follows \\(y = kx\\). Solve for constant \\(k = \\frac{y}{x}\\) first.',
+                        worked: '<strong>Worked Solution:</strong><br>Find constant of variation: \\(k = \\frac{20}{4} = 5\\), so \\(y = 5x\\).<br>When \\(x = 9\\): \\(y = 5(9) = 45\\).'
+                    },
+                    {
+                        id: 'q8',
+                        num: 8,
+                        sec: '1.4',
+                        title: 'Solving Proportions',
+                        prompt: 'Solve the proportion for \\(x\\): \\(\\frac{x + 3}{8} = \\frac{15}{20}\\).',
+                        placeholder: 'e.g. x = 12',
+                        targetCanon: '3',
+                        hint: 'Hint: Cross-multiply to solve: \\(20(x + 3) = 8(15)\\).',
+                        worked: '<strong>Worked Solution:</strong><br>\\(20(x + 3) = 120 \\implies 20x + 60 = 120 \\implies 20x = 60 \\implies x = 3\\).'
+                    }
+                ]
+            },
+            {
+                moduleTitle: "Module 3: Fitting Lines & Solving Linear Equations (Sec 1.5 - 1.6)",
+                theoryHeader: "Scatter Plots, Regression & Multi-Step Equations",
+                theoryBody: "• <strong>Correlation:</strong> Positive if variables move together; negative if one increases as the other decreases.<br>• <strong>Linear Regression:</strong> Evaluate models \\(\\hat{y} = mx + b\\) by substituting given \\(x\\) values.<br>• <strong>Multi-Step & Literal Equations:</strong> Distribute terms, combine like terms, and isolate target variables.",
+                questions: [
+                    {
+                        id: 'q9',
+                        num: 9,
+                        sec: '1.5',
+                        title: 'Scatter Plots & Correlation',
+                        prompt: 'A data plot shows that as study time increases, test scores consistently increase. Is this a <strong>positive</strong>, <strong>negative</strong>, or <strong>no correlation</strong>?',
+                        placeholder: 'e.g. Type positive, negative, or no correlation...',
+                        targetCanon: 'positive',
+                        hint: 'Hint: Consider the trend: when both variables increase together, slope is positive.',
+                        worked: '<strong>Worked Solution:</strong><br>Since both variables increase together (positive slope trend), the data shows a <strong>positive</strong> correlation.'
+                    },
+                    {
+                        id: 'q10',
+                        num: 10,
+                        sec: '1.5',
+                        title: 'Least-Squares Line & Estimation',
+                        prompt: 'Using a linear regression model \\(\\hat{y} = 1.8x + 12\\) where \\(x\\) is hours studied and \\(\\hat{y}\\) is test score, estimate the score for a student who studied \\(x = 45\\) hours.',
+                        placeholder: 'e.g. 78',
+                        targetCanon: '93',
+                        hint: 'Hint: Substitute \\(x = 45\\) directly into the regression equation \\(\\hat{y} = 1.8x + 12\\).',
+                        worked: '<strong>Worked Solution:</strong><br>Evaluate at \\(x = 45\\):<br>\\(\\hat{y} = 1.8(45) + 12 = 81 + 12 = 93\\).'
+                    },
+                    {
+                        id: 'q11',
+                        num: 11,
+                        sec: '1.6',
+                        title: 'Solving Linear Equations in One Variable',
+                        prompt: 'Solve the linear equation for \\(x\\): \\(4(2x - 3) = 3x + 13\\).',
+                        placeholder: 'e.g. x = 10',
+                        targetCanon: '5',
+                        hint: 'Hint: Distribute the 4 on the left side, then collect like terms.',
+                        worked: '<strong>Worked Solution:</strong><br>\\(8x - 12 = 3x + 13 \\implies 5x - 12 = 13 \\implies 5x = 25 \\implies x = 5\\).'
+                    },
+                    {
+                        id: 'q12',
+                        num: 12,
+                        sec: '1.6',
+                        title: 'Solving Literal Equations',
+                        prompt: 'Solve the literal formula \\(A = \\frac{1}{2}h(b_1 + b_2)\\) for \\(h\\).',
+                        placeholder: 'e.g. h = A / (b1 + b2)',
+                        targetCanon: 'h=2a/(b1+b2)',
+                        hint: 'Hint: Multiply both sides by 2, then divide by \\((b_1 + b_2)\\).',
+                        worked: '<strong>Worked Solution:</strong><br>Multiply by 2: \\(2A = h(b_1 + b_2)\\).<br>Divide by \\((b_1 + b_2)\\): \\(h = \\frac{2A}{b_1 + b_2}\\).'
+                    }
+                ]
+            },
+            {
+                moduleTitle: "Module 4: Inequalities & Absolute Value (Sec 1.7 - 1.8)",
+                theoryHeader: "Linear Inequalities & Absolute Values",
+                theoryBody: "• <strong>Inequalities:</strong> When multiplying or dividing by a negative number, FLIP the inequality sign (\\(< \\leftrightarrow >\\), \\(\\le \\leftrightarrow \\ge\\)).<br>• <strong>Compound Inequalities:</strong> Perform operations simultaneously across all three sides.<br>• <strong>Absolute Value Equations:</strong> \\(|x| = a \\implies x = a\\) or \\(x = -a\\).",
+                questions: [
+                    {
+                        id: 'q13',
+                        num: 13,
+                        sec: '1.7',
+                        title: 'Linear Inequalities in One Variable',
+                        prompt: 'Solve the inequality for \\(x\\): \\(-3x + 7 \\le 22\\). Express answer as an inequality.',
+                        placeholder: 'e.g. x >= 2',
+                        targetCanon: 'x>=-5',
+                        hint: 'Hint: Subtract 7, then divide by -3. Remember to flip the inequality sign when dividing by a negative number!',
+                        worked: '<strong>Worked Solution:</strong><br>\\(-3x \\le 15\\).<br>Divide by -3 and flip sign: \\(x \\ge -5\\).'
+                    },
+                    {
+                        id: 'q14',
+                        num: 14,
+                        sec: '1.7',
+                        title: 'Compound Linear Inequalities',
+                        prompt: 'Solve the compound inequality for \\(x\\): \\(-5 < 2x + 1 \\le 11\\).',
+                        placeholder: 'e.g. -5 < x <= 2',
+                        targetCanon: '-3<x<=5',
+                        hint: 'Hint: Subtract 1 from all three parts, then divide all parts by 2.',
+                        worked: '<strong>Worked Solution:</strong><br>Subtract 1: \\(-6 < 2x \\le 10\\).<br>Divide by 2: \\(-3 < x \\le 5\\).'
+                    },
+                    {
+                        id: 'q15',
+                        num: 15,
+                        sec: '1.8',
+                        title: 'Absolute-Value Equations & Inequalities',
+                        prompt: 'Solve the absolute value equation for \\(x\\): \\(|2x - 5| = 9\\). Enter both solutions separated by a comma (e.g. \\(x = a, b\\)).',
+                        placeholder: 'e.g. -4, 6',
+                        targetCanon: '-2,7',
+                        hint: 'Hint: Set up two separate linear equations: \\(2x - 5 = 9\\) and \\(2x - 5 = -9\\).',
+                        worked: '<strong>Worked Solution:</strong><br>Case 1: \\(2x - 5 = 9 \\implies 2x = 14 \\implies x = 7\\).<br>Case 2: \\(2x - 5 = -9 \\implies 2x = -4 \\implies x = -2\\).<br>Solutions are \\(x = -2, 7\\).'
+                    }
+                ]
+            }
+        ];
+
+        // State Tracking Map
+        const qState = {};
+        modulesData.forEach(mod => {
+            mod.questions.forEach(q => {
+                qState[q.id] = {
+                    attemptsLeft: 2,
+                    isCorrect: false,
+                    hint: q.hint,
+                    worked: q.worked,
+                    targetCanon: q.targetCanon
+                };
+            });
+        });
+
+        // Algebraic Expression Canonicalizer
+        function canonicalizeMathExpr(str) {
+            let s = str.trim().toLowerCase();
+            if (!s) return '';
+
+            // Clean spaces and LaTeX formatting
+            s = s.replace(/\\text\{[^}]*\}/g, '')
+                 .replace(/\s+/g, '')
+                 .replace(/\\ge|>=/g, '>=')
+                 .replace(/\\le|<=/g, '<=')
+                 .replace(/\\times|\*/g, '');
+
+            // Keyword classifications
+            if (s.includes('linear')) return 'linear';
+            if (s.includes('quadratic')) return 'quadratic';
+            if (s.includes('exponential')) return 'exponential';
+            if (s.includes('positive')) return 'positive';
+            if (s.includes('negative')) return 'negative';
+            if (s.includes('nocorrelation') || s.includes('none')) return 'no correlation';
+
+            // Clean single variable prefix (e.g. x=5 -> 5)
+            if (/^[a-z]=(-?\d+(\/\d+)?)$/.test(s)) {
+                s = s.split('=')[1];
+            }
+
+            // Multiple roots separated by commas: -2,7 or 7,-2
+            if (s.includes(',')) {
+                let parts = s.split(',').map(p => p.replace(/^[a-z]=/, '').trim()).sort();
+                return parts.join(',');
+            }
+
+            return s;
+        }
+
+        // Initialize UI Elements
+        function initQuestionsUI() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            modulesData.forEach(mod => {
+                const modSection = document.createElement('div');
+                modSection.className = "space-y-4";
+
+                let qHtml = '';
+                mod.questions.forEach(q => {
+                    qHtml += `
+                        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm transition-all" id="card-${q.id}">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-bold text-indigo-700 uppercase tracking-wider">Problem ${q.num} (Sec ${q.sec} - ${q.title})</span>
+                                <span class="text-xs text-slate-400 font-medium" id="status-${q.id}">Attempts left: 2</span>
+                            </div>
+                            <p class="text-sm text-slate-800 mb-3">${q.prompt}</p>
+                            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                                <input type="text" id="input-${q.id}" placeholder="${q.placeholder}" class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-indigo-600 focus:bg-white transition-all font-mono">
+                                <button onclick="checkQuestion('${q.id}')" id="btn-${q.id}" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-indigo-600/20 flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-paper-plane"></i> Submit Answer
+                                </button>
+                            </div>
+                            <div id="feedback-${q.id}" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+                        </div>
+                    `;
+                });
+
+                modSection.innerHTML = `
+                    <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-purple-950 text-white p-5 rounded-3xl shadow-md border border-slate-800">
+                        <h3 class="text-lg font-black text-indigo-300 flex items-center gap-2">
+                            <i class="fa-solid fa-layer-group text-indigo-400"></i> ${mod.moduleTitle}
+                        </h3>
+                        <div class="mt-3 pt-3 border-t border-indigo-800/50 bg-white/5 p-4 rounded-2xl text-xs text-slate-200 leading-relaxed">
+                            <strong class="text-indigo-200 block mb-1 text-sm"><i class="fa-solid fa-lightbulb text-amber-400"></i> ${mod.theoryHeader}</strong>
+                            ${mod.theoryBody}
+                        </div>
+                    </div>
+                    ${qHtml}
+                `;
+
+                container.appendChild(modSection);
+            });
+
+            if (window.MathJax) window.MathJax.typesetPromise();
+        }
+
+        // Check Question Response
+        function checkQuestion(qId) {
+            const q = qState[qId];
+            if (q.attemptsLeft <= 0 || q.isCorrect) return;
+
+            const inputEl = document.getElementById(`input-${qId}`);
+            const feedbackEl = document.getElementById(`feedback-${qId}`);
+            const statusEl = document.getElementById(`status-${qId}`);
+            const btnEl = document.getElementById(`btn-${qId}`);
+
+            const userCanon = canonicalizeMathExpr(inputEl.value);
+            const targetCanon = canonicalizeMathExpr(q.targetCanon);
+
+            q.attemptsLeft--;
+            const isUserCorrect = (userCanon === targetCanon && userCanon !== '');
+
+            feedbackEl.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'border-emerald-200', 'bg-rose-50', 'text-rose-800', 'border-rose-200');
+
+            if (isUserCorrect) {
+                q.isCorrect = true;
+                feedbackEl.classList.add('bg-emerald-50', 'text-emerald-800', 'border', 'border-emerald-200');
+                feedbackEl.innerHTML = `<div class="mb-1"><i class="fa-solid fa-circle-check text-emerald-600"></i> Correct! Excellent job.</div>${q.worked}`;
+                statusEl.textContent = "Status: Correct";
+                btnEl.disabled = true;
+                btnEl.className = "px-5 py-2.5 bg-slate-100 text-emerald-700 font-bold text-xs rounded-xl cursor-not-allowed border border-emerald-200";
+                updateScore();
+                if (window.MathJax) window.MathJax.typesetPromise([feedbackEl]);
+            } else {
+                if (q.attemptsLeft > 0) {
+                    feedbackEl.classList.add('bg-rose-50', 'text-rose-800', 'border', 'border-rose-200');
+                    feedbackEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-rose-600"></i> Incorrect. You have 1 attempt remaining.<br>${q.hint}`;
+                    statusEl.textContent = "Attempts left: 1";
+                    if (window.MathJax) window.MathJax.typesetPromise([feedbackEl]);
+                } else {
+                    feedbackEl.classList.add('bg-rose-50', 'text-rose-800', 'border', 'border-rose-200');
+                    feedbackEl.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600"></i> Incorrect (0 attempts left).<br>${q.worked}`;
+                    statusEl.textContent = "Status: Out of attempts";
+                    btnEl.disabled = true;
+                    btnEl.className = "px-5 py-2.5 bg-slate-100 text-slate-400 font-bold text-xs rounded-xl cursor-not-allowed border border-slate-200";
+                    if (window.MathJax) window.MathJax.typesetPromise([feedbackEl]);
+                }
+            }
+        }
+
+        function updateScore() {
+            const correctCount = Object.values(qState).filter(q => q.isCorrect).length;
+            document.getElementById('score-counter').textContent = correctCount;
+        }
+
+        // ================= CONFETTI & AUDIO CELEBRATION =================
+        let audioCtx = null;
+        function playCelebrationSound() {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                
+                const freqs = [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98];
+                freqs.forEach((freq, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.08);
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime + idx * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.08 + 0.45);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(audioCtx.currentTime + idx * 0.08);
+                    osc.stop(audioCtx.currentTime + idx * 0.08 + 0.45);
+                });
+            } catch (err) {
+                console.warn("Audio Context playback prevented:", err);
+            }
+        }
+
+        function triggerConfettiCelebration() {
+            playCelebrationSound();
+            if (typeof confetti === 'function') {
+                const count = 200;
+                const defaults = { origin: { y: 0.7 } };
+
+                function fire(particleRatio, opts) {
+                    confetti(Object.assign({}, defaults, opts, {
+                        particleCount: Math.floor(count * particleRatio)
+                    }));
+                }
+
+                fire(0.25, { spread: 26, startVelocity: 55, colors: ['#4f46e5', '#7c3aed', '#f59e0b'] });
+                fire(0.2, { spread: 60, colors: ['#10b981', '#06b6d4', '#ec4899'] });
+                fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+                fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2, shapes: ['star'] });
+                fire(0.1, { spread: 120, startVelocity: 45, shapes: ['circle'] });
+
+                setTimeout(() => {
+                    confetti({ particleCount: 80, angle: 60, spread: 70, origin: { x: 0, y: 0.6 } });
+                    confetti({ particleCount: 80, angle: 120, spread: 70, origin: { x: 1, y: 0.6 } });
+                }, 400);
+
+                setTimeout(() => {
+                    confetti({ particleCount: 100, angle: 90, spread: 100, origin: { x: 0.5, y: 0.4 }, scalar: 1.3, shapes: ['star'] });
+                }, 800);
+            }
+        }
+
+        // Generate Grade Token Modal
+        function generateCompletionModal() {
+            const firstName = document.getElementById('student-first-name').value.trim() || "Anonymous";
+            const lastName = document.getElementById('student-last-name').value.trim() || "Student";
+            const fullName = `${firstName} ${lastName}`;
+
+            const correctCount = Object.values(qState).filter(q => q.isCorrect).length;
+            triggerConfettiCelebration();
+
+            const durationSec = Math.round((Date.now() - moduleStartTime) / 1000);
+            
+            let qBreakdown = [];
+            let qIdx = 1;
+            modulesData.forEach(mod => {
+                mod.questions.forEach(q => {
+                    const state = qState[q.id];
+                    const statusChar = state.isCorrect ? 'S' : 'F';
+                    const atts = 2 - state.attemptsLeft;
+                    qBreakdown.push(`Q${qIdx}:${statusChar}:${atts}:30s`);
+                    qIdx++;
+                });
+            });
+
+            const payloadStr = `${ASSIGNMENT_TITLE}|${lastName}, ${firstName}|${correctCount}/15|${durationSec}s|${qBreakdown.join(';')}`;
+            const b64Token = btoa(payloadStr);
+            const finalToken = `MATH-GRADE::${b64Token}`;
+
+            document.getElementById('modal-student-name').textContent = `Student: ${fullName}`;
+            document.getElementById('modal-score-badge').textContent = `Score: ${correctCount} / 15 (${Math.round((correctCount/15)*100)}%)`;
+            document.getElementById('token-display').textContent = finalToken;
+
+            document.getElementById('completion-modal').classList.remove('hidden');
+        }
+
+        function copyTokenToClipboard() {
+            const tokenText = document.getElementById('token-display').textContent;
+            navigator.clipboard.writeText(tokenText).then(() => {
+                const btn = document.getElementById('copy-token-btn');
+                btn.innerHTML = `<i class="fa-solid fa-check"></i> Token Copied!`;
+                btn.className = "w-full py-2.5 bg-emerald-600 text-white font-bold text-xs rounded-xl transition-all shadow-md flex items-center justify-center gap-2";
+                setTimeout(() => {
+                    btn.innerHTML = `<i class="fa-solid fa-copy"></i> Copy Token to Clipboard`;
+                    btn.className = "w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all shadow-md flex items-center justify-center gap-2";
+                }, 2000);
+            });
+        }
+
+        function closeCompletionModal() {
+            document.getElementById('completion-modal').classList.add('hidden');
+        }
+
+        window.onload = function() {
+            initQuestionsUI();
+        };
+    </script>
+</body>
+</html>
